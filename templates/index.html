@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaf Disease Detection System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+                
+        h1, h2, h3, h4 {
+            color: #2c7c4e;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .upload-form {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .prediction {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c7c4e;
+        }
+        .disease-info {
+            background-color: #f0f8ff;
+            border-left: 4px solid #4682b4;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .tech-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .submit-btn {
+            background-color: #2c7c4e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .preview-container {
+            margin: 20px auto;
+            max-width: 300px;
+            display: none;
+        }
+        #imagePreview {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background: #f0f8ff;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .nav {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: #2c7c4e;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1 style="text-align: center;">Leaf Disease Detection System</h1>
+        <h4 style="text-align: center;">By Jeevesh and Alisha Gambhir</h4>
+        
+        <div class="upload-form">
+            <form method="post" enctype="multipart/form-data">
+                <p>Upload an image of a plant leaf to detect disease:</p>
+                <input type="file" name="file" id="file" accept="image/*" onchange="previewImage()">
+                <div class="preview-container" id="previewContainer">
+                    <img id="imagePreview" src="#" alt="Image Preview">
+                </div>
+                <br><br>
+                <button type="submit" class="submit-btn">Analyze Leaf</button>
+            </form>
+        </div>
+        
+        {% if error %}
+        <div class="result" style="background-color: #ffebee;">
+            <p>Error: {{ error }}</p>
+        </div>
+        {% endif %}
+        
+        {% if result %}
+        <div class="result" style="background-color: #e8f5e9;">
+            <h2>Analysis Results</h2>
+            <p class="prediction">Diagnosis: {{ result.prediction|replace('_', ' ') }}</p>
+            <p>Confidence: {{ "%.2f"|format(result.confidence) }}%</p>
+            
+            <div class="disease-info">
+                <h3>Disease Information:</h3>
+                <p>{{ result.disease_info }}</p>
+            </div>
+            
+            {% if result.all_predictions %}
+            <div>
+                <h3>Other Possibilities:</h3>
+                <ul>
+                {% for disease, prob in result.all_predictions[1:] %}
+                    <li>{{ disease|replace('_', ' ') }}: {{ "%.2f"|format(prob) }}%</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="tech-box">
+                <h3>Cybersecurity & Blockchain:</h3>
+                <p>Image Hash: {{ result.image_hash }}</p>
+                <p>Blockchain Record: Block #{{ result.blockchain_index }}</p>
+                <p>Your secure session is active.</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Cloud Status</h3>
+                <p>{{ 'Connected' if stats.cloud_enabled else 'Local Mode' }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Analyses</h3>
+                <p>{{ stats.total_analyses }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Blockchain Size</h3>
+                <p>{{ stats.blockchain_blocks }} blocks</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Disease Information</h2>
+        <div>
+            {% for disease, info in disease_info.items() %}
+            <div class="disease-info">
+                <h3>{{ disease|replace('_', ' ') }}</h3>
+                <p>{{ info }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Technologies Used</h2>
+        <div>
+            <h3>Cloud Computing</h3>
+            <p>Firebase Firestore for scalable data storage and retrieval.</p>
+            
+            <h3>Cybersecurity</h3>
+            <p>Secure session management, image hashing, and API authentication.</p>
+            
+            <h3>Blockchain</h3>
+            <p>Simple blockchain implementation to record and verify diagnosis history.</p>
+            
+            <h3>Enterprise Resource Planning (ERP)</h3>
+            <p>Integrated system to manage and track all plant disease analyses.</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>This is created by Jeevesh and Alisha Gambhir</p>
+    </div>
+
+    <script>
+        function previewImage() {
+            const fileInput = document.getElementById('file');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('imagePreview');
+            
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
+        

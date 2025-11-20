@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERP Dashboard - Leaf Disease Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c7c4e;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #e8f5e9;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .nav {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: #2c7c4e;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        .block-info {
+            background-color: #e6f7ff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .disease-distribution {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Home</a>
+    </div>
+    
+    <div class="container">
+        <h1>ERP Dashboard</h1>
+        <p>Enterprise Resource Planning System for Leaf Disease Detection</p>
+        
+        <h2>Analysis Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Record ID</th>
+                    <th>User ID</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.record_id[:8] }}...</td>
+                    <td>{{ record.user_id[:8] }}...</td>
+                    <td>{{ record.prediction|replace('_', ' ') }}</td>
+                    <td>{{ "%.2f"|format(record.confidence) }}%</td>
+                    <td>{{ record.timestamp }}</td>
+                </tr>
+                {% endfor %}
+                {% if not records %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">No records found. Analyze some leaves to create records!</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        
+        <div class="disease-distribution">
+            <h2>Disease Distribution</h2>
+            <div id="distributionChart" style="height: 300px; background: #f5f5f5; display: flex; align-items: flex-end; padding: 20px;">
+                <!-- Placeholder for a real chart implementation -->
+                {% set diseases = {'Anthracnose': 0, 'Bacterial_Blight': 0, 'Cercospora_Leaf_Spot': 0, 'Powdery_Mildew': 0, 'Shot_Hole_Disease': 0} %}
+                
+                {% for record in records %}
+                    {% if record.prediction in diseases %}
+                        {% set _ = diseases.update({record.prediction: diseases[record.prediction] + 1}) %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% for disease, count in diseases.items() %}
+                    <div style="margin-right: 10px; text-align: center;">
+                        <div style="background-color: #4682b4; width: 40px; height: {{ count * 30 if count else 5 }}px;"></div>
+                        <div style="font-size: 12px; margin-top: 5px; writing-mode: vertical-lr; transform: rotate(180deg);">
+                            {{ disease|replace('_', ' ') }}
+                        </div>
+                        <div>{{ count }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <h2>Blockchain Ledger</h2>
+        {% for block in blockchain %}
+        <div class="block-info">
+            <h3>Block #{{ block.index }}</h3>
+            <p><strong>Timestamp:</strong> {{ block.timestamp }}</p>
+            <p><strong>Previous Hash:</strong> {{ block.previous_hash }}</p>
+            <p><strong>Proof:</strong> {{ block.proof }}</p>
+            
+            <h4>Transactions:</h4>
+            {% if block.transactions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Image Hash</th>
+                        <th>Prediction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in block.transactions %}
+                    <tr>
+                        <td>{{ tx.user_id[:8] }}...</td>
+                        <td>{{ tx.image_hash[:8] }}...</td>
+                        <td>{{ tx.prediction|replace('_', ' ') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No transactions in this block.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+        
