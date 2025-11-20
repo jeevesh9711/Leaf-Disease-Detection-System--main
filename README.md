@@ -57,7 +57,7 @@ The code is organized into several key components:
 
 1. **Clone the Repository**:
    ```bash
-   https://github.com/ishaanagarwal78/Leaf-Disease-Detection-System-.git
+   https://github.com/jeevesh9711/Leaf-Disease-Detection-System--main.git
    ```
 
 2. **Install Dependencies**:
@@ -145,4 +145,4 @@ The Leaf Disease Detection System is a significant leap forward in agricultural 
 
 ### GitHub Repository 📚
 
-[Link to our GitHub repository](https://github.com/ishaanagarwal78/Leaf-Disease-Detection-System-.git)
+[Link to our GitHub repository](https://github.com/jeevesh9711/Leaf-Disease-Detection-System--main.git)
