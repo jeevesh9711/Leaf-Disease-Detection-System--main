@@ -4,9 +4,18 @@
 <head>
     <title>Leaf Disease Detection System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,#e8f5e9,#c8e6c9);
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
@@ -96,29 +105,65 @@
             text-decoration: none;
             padding: 5px 10px;
         }
+        .container{
+            transition: 0.3s;
+        }
+
+        .container:hover{
+            transform: translateY(-5px);
+            box-shadow:0 10px 20px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
 <body>
     <div class="nav">
         <a href="/dashboard">Dashboard</a>
     </div>
-    
+    <div style="text-align:center;margin-bottom:30px;">
+        <h2>AI Powered Plant Disease Detection</h2>
+        <p>Upload a plant leaf image and our AI will detect diseases instantly.</p>
+    </div>
     <div class="container">
-        <h1>Leaf Disease Detection System</h1>
-        <h4>By Jeevesh and Alisha Gambhir</h4>
+        <h1 style="text-align:center;">
+        <i class="fa-solid fa-leaf"></i>
+            Leaf Disease Detection System
+        </h1>
         
-        <div class="upload-form">
-            <form method="post" enctype="multipart/form-data">
-                <p>Upload an image of a plant leaf to detect disease:</p>
-                <input type="file" name="file" id="file" accept="image/*" onchange="previewImage()">
-                <div class="preview-container" id="previewContainer">
-                    <img id="imagePreview" src="#" alt="Image Preview">
-                </div>
-                <br><br>
-                <button type="submit" class="submit-btn">Analyze Leaf</button>
-            </form>
-        </div>
         
+       <div class="upload-form">
+
+<form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+
+<p style="font-size:18px;">
+<i class="fa-solid fa-leaf"></i> Upload an image of a plant leaf to detect disease:
+</p>
+
+<input type="file"
+       class="form-control"
+       name="file"
+       id="file"
+       accept="image/*"
+       onchange="previewImage()">
+
+<div class="preview-container" id="previewContainer">
+    <img id="imagePreview" src="#" alt="Image Preview">
+</div>
+
+<br>
+
+<button type="submit" class="btn btn-success mt-3 px-4">
+<i class="fa-solid fa-magnifying-glass"></i> Analyze Leaf
+</button>
+
+<div id="loading" style="display:none;text-align:center;margin-top:15px;">
+    <img src="https://i.gifer.com/ZZ5H.gif" width="60">
+    <p>Analyzing leaf...</p>
+</div>
+
+</form>
+
+</div>
+
         {% if error %}
         <div class="result" style="background-color: #ffebee;">
             <p>Error: {{ error }}</p>
@@ -156,7 +201,7 @@
         </div>
         {% endif %}
         
-        <div class="stats">
+        <div class="stats row text-center"></div>
             <div class="stat-card">
                 <h3>Cloud Status</h3>
                 <p>{{ 'Connected' if stats.cloud_enabled else 'Local Mode' }}</p>
@@ -202,7 +247,10 @@
     </div>
     
     <div class="footer">
-        <p>This is created by Jeevesh and Alisha Gambhir</p>
+        <p>
+        <i class="fa-solid fa-code"></i>
+        Created by Jeevesh & Alisha Gambhir | AI Project
+        </p>
     </div>
 
     <script>
@@ -220,6 +268,9 @@
                 }
                 
                 reader.readAsDataURL(fileInput.files[0]);
+            }
+            function showLoading(){
+                document.getElementById("loading").style.display="block";
             }
         }
     </script>

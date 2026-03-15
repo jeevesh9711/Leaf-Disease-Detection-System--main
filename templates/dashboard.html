@@ -4,41 +4,56 @@
 <head>
     <title>ERP Dashboard - Leaf Disease Detection</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,#e8f5e9,#c8e6c9);
+            max-width: 1100px;
+            margin: auto;
+        padding: 20px;
         }
         h1, h2, h3 {
             color: #2c7c4e;
         }
-        .container {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+        .container{
+            background:white;
+            border-radius:12px;
+            padding:25px;
+            margin-bottom:25px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.15);
+            transition:0.3s;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #e8f5e9;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+
+.container:hover{
+transform:translateY(-4px);
+}
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th{
+background:#2c7c4e;
+color:white;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+background:#f1f1f1;
+}
         .nav {
             text-align: right;
             margin-bottom: 20px;
@@ -48,12 +63,14 @@
             text-decoration: none;
             padding: 5px 10px;
         }
-        .block-info {
-            background-color: #e6f7ff;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
+       .block-info{
+background:#f9f9f9;
+border-left:5px solid #2c7c4e;
+padding:15px;
+margin-top:20px;
+border-radius:8px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
         .disease-distribution {
             margin-top: 30px;
         }
@@ -61,11 +78,49 @@
 </head>
 <body>
     <div class="nav">
-        <a href="/">Home</a>
-    </div>
-    
+<a href="/" class="btn btn-outline-success">
+<i class="fa-solid fa-house"></i> Home
+</a>
+</div>
     <div class="container">
-        <h1>ERP Dashboard</h1>
+        <h1>
+<i class="fa-solid fa-chart-line"></i>
+ERP Dashboard
+</h1>
+<div class="container">
+
+    <h1>
+    <i class="fa-solid fa-chart-line"></i>
+    ERP Dashboard
+    </h1>
+
+    <!-- Analytics Cards -->
+    <div class="row text-center mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow p-3">
+                <h5><i class="fa-solid fa-leaf"></i> Total Records</h5>
+                <p>{{ records|length }}</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-3">
+                <h5><i class="fa-solid fa-database"></i> Blockchain Blocks</h5>
+                <p>{{ blockchain|length }}</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-3">
+                <h5><i class="fa-solid fa-user"></i> Active Users</h5>
+                <p>{{ records|length }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <p>Enterprise Resource Planning System for Leaf Disease Detection</p>
         <p>Enterprise Resource Planning System for Leaf Disease Detection</p>
         
         <h2>Analysis Records</h2>
@@ -99,7 +154,10 @@
         
         <div class="disease-distribution">
             <h2>Disease Distribution</h2>
-            <div id="distributionChart" style="height: 300px; background: #f5f5f5; display: flex; align-items: flex-end; padding: 20px;">
+            <div id="distributionChart" 
+style="height:300px;background:white;border-radius:10px;
+display:flex;align-items:flex-end;padding:20px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);">
                 <!-- Placeholder for a real chart implementation -->
                 {% set diseases = {'Anthracnose': 0, 'Bacterial_Blight': 0, 'Cercospora_Leaf_Spot': 0, 'Powdery_Mildew': 0, 'Shot_Hole_Disease': 0} %}
                 
@@ -121,7 +179,10 @@
             </div>
         </div>
         
-        <h2>Blockchain Ledger</h2>
+        <h2>
+<i class="fa-solid fa-link"></i>
+Blockchain Ledger
+</h2>
         {% for block in blockchain %}
         <div class="block-info">
             <h3>Block #{{ block.index }}</h3>
