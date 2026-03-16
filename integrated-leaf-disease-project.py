@@ -170,6 +170,14 @@ def load_model():
 def predict_image(image_bytes, user_id):
     """Process image and return prediction"""
     try:
+        image = Image.open(io.BytesIO(image_bytes))
+        image_tensor = transform(image).unsqueeze(0).to(device)
+
+        with torch.no_grad():
+            outputs = model(image_tensor)
+            probabilities = torch.nn.functional.softmax(outputs, 1)[0]
+            _, predicted = torch.max(outputs, 1)
+            
         # Create image from bytes
         image = Image.open(io.BytesIO(image_bytes))
         image_tensor = transform(image).unsqueeze(0).to(device)
