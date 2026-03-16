@@ -171,66 +171,55 @@ def load_model():
 model = load_model()
 
 def predict_image(image_bytes, user_id):
+
     try:
+        # Create image from bytes
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         image_tensor = transform(image).unsqueeze(0).to(device)
 
-        with torch.no_grad():
-            outputs = model(image_tensor)
-            probabilities = torch.nn.functional.softmax(outputs, dim=1)
-
-        _, predicted = torch.max(outputs, 1)
-        return classes[predicted.item()]
-
-    except Exception as e:
-        logger.error(f"Prediction error: {e}")
-        return "Prediction Failed"
-    
-        # Create image from bytes
-        image = Image.open(io.BytesIO(image_bytes))
-        image_tensor = transform(image).unsqueeze(0).to(device)
-        
-        # Get image hash for security and blockchain
+        # Get image hash
         image_hash = secure_image_hash(image_bytes)
-        
-        # Make prediction
+
+        # Load model
         model = load_model()
+
         with torch.no_grad():
             outputs = model(image_tensor)
-            probabilities = torch.nn.functional.softmax(outputs, 1)[0]
+            probabilities = torch.nn.functional.softmax(outputs, dim=1)[0]
             _, predicted = torch.max(outputs, 1)
-        
+
         prediction = classes[predicted.item()]
         confidence = float(probabilities[predicted.item()]) * 100
-        
-        # Record transaction in blockchain
+
+        # Blockchain record
         blockchain.add_transaction(user_id, image_hash, prediction)
-        
-        # Add record to ERP system
+
+        # ERP record
         timestamp = datetime.datetime.now().isoformat()
         erp_system.add_analysis_record(user_id, prediction, confidence, timestamp)
-        
-        # Create results
+
+        # Top predictions
         class_probs = [(classes[i], float(probabilities[i]) * 100) for i in range(len(classes))]
         class_probs.sort(key=lambda x: x[1], reverse=True)
-        
+
         return {
-            'prediction': prediction,
-            'confidence': confidence,
-            'image_hash': image_hash,
-            'blockchain_index': blockchain.get_previous_block()['index'],
-            'all_predictions': class_probs[:3],  # Top 3 predictions
-            'disease_info': disease_info.get(prediction, "No additional information available.")
-        }
-        
-    except Exception as e:
-        logger.error(f"Prediction error: {e}")
-        return {
-            'error': str(e),
-            'prediction': 'Error in processing',
-            'confidence': 0
+            "prediction": prediction,
+            "confidence": confidence,
+            "image_hash": image_hash,
+            "blockchain_index": blockchain.get_previous_block()["index"],
+            "all_predictions": class_probs[:3],
+            "disease_info": disease_info.get(prediction, "No additional information available.")
         }
 
+    except Exception as e:
+        logger.error(f"Prediction error: {e}")
+
+        return {
+            "prediction": "Error in processing",
+            "confidence": 0,
+            "error": str(e)
+        }
+    
 # ------ ROUTES ------
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -301,7 +290,9 @@ def create_templates():
     # Create templates directory if it doesn't exist
     if not os.path.exists('templates'):
         os.makedirs('templates')
-    
+
+
+"""    
     # Create index.html
     with open('templates/index.html', 'w') as f:
         f.write('''
@@ -695,6 +686,8 @@ def create_templates():
 </body>
 </html>
         ''')
+"""
+
 
 # Generate a simple Firebase key file if needed
 def create_firebase_key():
@@ -750,7 +743,8 @@ if __name__ == '__main__':
     print("2. Cybersecurity: Secure sessions, image hashing, and API auth")
     print("3. Blockchain: Simple implementation for record verification")
     print("4. ERP: Integrated management of analysis records")
-    
+
+"""
     # Create requirements.txt
     with open('requirements.txt', 'w') as f:
         f.write('''
@@ -762,6 +756,7 @@ Pillow==9.0.0
 firebase-admin==5.0.3
 gunicorn==20.1.0
         '''.strip())
-    
-    # Run the app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+"""  
+
+# Run the app
+app.run(debug=True, host='0.0.0.0', port=5000)
