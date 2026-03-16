@@ -147,25 +147,28 @@ erp_system = SimpleERP()
 def load_model():
     """Load the trained model"""
     try:
-        # Adjust model architecture as needed
         model = models.resnet18(weights=None)
         num_ftrs = model.fc.in_features
-        model.fc = nn.Linear(num_ftrs, len(classes))  # 5 classes
-        
-        # Change path to your model file
+        model.fc = nn.Linear(num_ftrs, len(classes))
+
         model.load_state_dict(torch.load('my_leaf_disease_model.pth', map_location=device))
         model.to(device)
         model.eval()
         return model
+
     except Exception as e:
         logger.error(f"Error loading model: {e}")
-        # Fallback to a new untrained model for demo purposes
+
         model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
         num_ftrs = model.fc.in_features
         model.fc = nn.Linear(num_ftrs, len(classes))
         model.to(device)
         model.eval()
         return model
+
+
+# ✅ LOAD MODEL ONCE WHEN SERVER STARTS
+model = load_model()
 
 def predict_image(image_bytes, user_id):
     try:
