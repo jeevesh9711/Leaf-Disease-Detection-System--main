@@ -16,115 +16,217 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg,#e8f5e9,#c8e6c9);
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
             padding: 20px;
             line-height: 1.6;
             color: #333;
         }
-                
+
+        .page-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+        }
+
+        .btn-submit {
+            width: 100%;
+            max-width: 280px;
+        }
+
         h1, h2, h3, h4 {
             color: #2c7c4e;
         }
-        .container {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
+
         .upload-form {
             margin: 20px 0;
             text-align: center;
         }
+
         .result {
             margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 18px;
+            border-radius: 12px;
         }
+
         .prediction {
             font-size: 24px;
             font-weight: bold;
             color: #2c7c4e;
         }
+
         .disease-info {
             background-color: #f0f8ff;
             border-left: 4px solid #4682b4;
-            padding: 10px;
+            padding: 14px;
             margin: 10px 0;
+            border-radius: 10px;
         }
+
         .tech-box {
             background-color: #e6f7ff;
             border-left: 4px solid #1890ff;
-            padding: 10px;
+            padding: 14px;
             margin: 10px 0;
+            border-radius: 10px;
         }
-        .submit-btn {
-            background-color: #2c7c4e;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+
         .preview-container {
             margin: 20px auto;
-            max-width: 300px;
+            max-width: 100%;
             display: none;
         }
+
         #imagePreview {
             width: 100%;
-            border-radius: 5px;
+            height: auto;
+            border-radius: 10px;
         }
+
         .footer {
             margin-top: 40px;
             text-align: center;
             color: #666;
             font-size: 14px;
         }
-        .stats {
+
+        .stats-row {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 16px;
         }
+
         .stat-card {
-            flex: 1;
-            min-width: 200px;
+            flex: 1 1 200px;
             background: #f0f8ff;
             margin: 5px;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
+            min-width: 180px;
         }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: white;
+            margin-left: 6px;
+        }
+
+        .severity-mild {
+            background-color: #4caf50;
+        }
+
+        .severity-medium {
+            background-color: #ff9800;
+        }
+
+        .severity-high {
+            background-color: #f44336;
+        }
+
+        .severity-low {
+            background-color: #4caf50;
+        }
+
+        .severity-text-mild {
+            color: #2e7d32;
+        }
+
+        .severity-text-medium {
+            color: #ef6c00;
+        }
+
+        .severity-text-high {
+            color: #c62828;
+        }
+
+        .severity-text-low {
+            color: #2e7d32;
+        }
+
         .nav {
             text-align: right;
             margin-bottom: 20px;
         }
+
         .nav a {
             color: #2c7c4e;
             text-decoration: none;
             padding: 5px 10px;
         }
-        .container{
+
+        .container {
             transition: 0.3s;
         }
 
-        .container:hover{
+        .container:hover {
             transform: translateY(-5px);
             box-shadow:0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 18px;
+            }
+
+            .nav {
+                text-align: center;
+            }
+
+            .nav a {
+                display: inline-block;
+                margin: 0 4px;
+            }
+
+            .stats-row {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 1.9rem;
+            }
+
+            .prediction {
+                font-size: 20px;
+            }
+
+            .upload-form p {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="nav">
-        <a href="/dashboard">Dashboard</a>
-    </div>
-    <div style="text-align:center;margin-bottom:30px;">
-        <h2>AI Powered Plant Disease Detection</h2>
-        <p>Upload a plant leaf image and our AI will detect diseases instantly.</p>
-    </div>
-    <div class="container">
-        <h1 style="text-align:center;">
+    <div class="page-shell">
+        <div class="nav">
+            <a href="/dashboard">Dashboard</a>
+        </div>
+        <div class="text-center mb-4">
+            <h2>AI Powered Plant Disease Detection</h2>
+            <p>Upload a plant leaf image and our AI will detect diseases instantly.</p>
+        </div>
+        <div class="container">
+            <h1 class="text-center">
         <i class="fa-solid fa-leaf"></i>
             Leaf Disease Detection System
         </h1>
@@ -151,7 +253,7 @@
 
 <br>
 
-<button type="submit" class="btn btn-success mt-3 px-4">
+<button type="submit" class="btn btn-success btn-submit mt-3 px-4">
 <i class="fa-solid fa-magnifying-glass"></i> Analyze Leaf
 </button>
 
@@ -164,13 +266,17 @@
 
 </div>
 
-        {% if error %}
-        <div class="result" style="background-color: #ffebee;">
-            <p>Error: {{ error }}</p>
+        {% if result and result.get('error') %}
+        <div class="result" style="background-color: #ffebee; border-left: 4px solid #d32f2f;">
+            <h3 style="color: #d32f2f;"><i class="fa-solid fa-circle-exclamation"></i> Invalid Image</h3>
+            <p><strong>{{ result.error }}</strong></p>
         </div>
-        {% endif %}
-        
-        {% if result %}
+        {% elif error %}
+        <div class="result" style="background-color: #ffebee; border-left: 4px solid #d32f2f;">
+            <h3 style="color: #d32f2f;"><i class="fa-solid fa-circle-exclamation"></i> Error</h3>
+            <p><strong>{{ error }}</strong></p>
+        </div>
+        {% elif result and result.get('is_leaf') %}
         <div class="result" style="background-color: #e8f5e9;">
             <h2>Analysis Results</h2>
             <p class="prediction">Diagnosis: {{ result.prediction|replace('_', ' ') }}</p>
@@ -180,6 +286,52 @@
                 <h3>Disease Information:</h3>
                 <p>{{ result.disease_info }}</p>
             </div>
+
+            {% if result.severity_analysis %}
+            <div class="disease-info" style="border-left-color: #ff5722; background-color: #fff3e0;">
+                <h3 style="color: #d84315;"><i class="fa-solid fa-gauge"></i> Disease Severity Analysis:</h3>
+                <p><strong>Severity Level:</strong> <span class="severity-text-{{ 'high' if result.severity_analysis.severity_level == 'High' else 'medium' if result.severity_analysis.severity_level == 'Medium' else 'low' }}">{{ result.severity_analysis.severity_level }}</span></p>
+                <p><strong>Affected Leaf Area:</strong> {{ "%.1f"|format(result.severity_analysis.affected_percentage) }}%</p>
+                <p><strong>Description:</strong> {{ result.severity_analysis.description }}</p>
+                <p><strong>Risk Level:</strong> <span class="badge severity-{{ result.severity_analysis.risk_level|lower }}">{{ result.severity_analysis.risk_level }}</span></p>
+                <p><strong>Action Required:</strong> {{ result.severity_analysis.action_required }}</p>
+            </div>
+            {% endif %}
+
+            {% if result.disease_solutions %}
+            <div class="disease-info" style="border-left-color: #2196f3; background-color: #e3f2fd;">
+                <h3 style="color: #1976d2;"><i class="fa-solid fa-spray-can"></i> Treatment Solutions:</h3>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                {% for solution in result.disease_solutions %}
+                    <li style="margin: 8px 0;">{{ solution }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            {% if result.disease_prediction %}
+            <div class="disease-info" style="border-left-color: #9c27b0; background-color: #f3e5f5;">
+                <h3 style="color: #6a1b9a;"><i class="fa-solid fa-crystal-ball"></i> Future Predictions for Your Crops:</h3>
+                <div style="background: white; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                    <p><strong>📅 Week 1:</strong> {{ result.disease_prediction.week_1 }}</p>
+                </div>
+                <div style="background: white; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                    <p><strong>📅 Week 2:</strong> {{ result.disease_prediction.week_2 }}</p>
+                </div>
+                <div style="background: white; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                    <p><strong>📅 Week 3:</strong> {{ result.disease_prediction.week_3 }}</p>
+                </div>
+                <div style="background: #ffebee; padding: 12px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #d32f2f;">
+                    <p><strong>⚠️ Long-Term (No Treatment):</strong> {{ result.disease_prediction.long_term }}</p>
+                </div>
+                <div style="background: #fff3e0; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                    <p><strong>🌱 Seasonal Pattern:</strong> {{ result.disease_prediction.seasonal }}</p>
+                </div>
+                <div style="background: #e8f5e9; padding: 12px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #2e7d32;">
+                    <p><strong>✅ Our Recommendation:</strong> {{ result.disease_prediction.recommendation }}</p>
+                </div>
+            </div>
+            {% endif %}
             
             {% if result.all_predictions %}
             <div>
@@ -201,7 +353,7 @@
         </div>
         {% endif %}
         
-        <div class="stats row text-center"></div>
+        <div class="stats-row">
             <div class="stat-card">
                 <h3>Cloud Status</h3>
                 <p>{{ 'Connected' if stats.cloud_enabled else 'Local Mode' }}</p>
@@ -223,7 +375,7 @@
             {% for disease, info in disease_info.items() %}
             <div class="disease-info">
                 <h3>{{ disease|replace('_', ' ') }}</h3>
-                <p>{{ info }}</p>
+                <p>{{ info.description }}</p>
             </div>
             {% endfor %}
         </div>
@@ -232,17 +384,35 @@
     <div class="container">
         <h2>Technologies Used :</h2>
         <div>
-            <h3>Cloud Computing</h3>
-            <p>Firebase Firestore for scalable data storage and retrieval.</p>
-            
-            <h3>Cybersecurity</h3>
-            <p>Secure session management, image hashing, and API authentication.</p>
-            
-            <h3>Blockchain</h3>
-            <p>Simple blockchain implementation to record and verify diagnosis history.</p>
-            
-            <h3>Enterprise Resource Planning (ERP)</h3>
-            <p>Integrated system to manage and track all plant disease analyses.</p>
+            <h3><i class="fa-solid fa-brain"></i> Artificial Intelligence & Machine Learning</h3>
+            <p>PyTorch deep learning framework with ResNet-18 CNN architecture for image classification. Trained on 5 leaf disease classes with transfer learning techniques.</p>
+
+            <h3><i class="fa-solid fa-eye"></i> Computer Vision</h3>
+            <p>OpenCV and PIL libraries for image processing, preprocessing, and feature extraction. Image transformations including resizing, normalization, and augmentation.</p>
+
+            <h3><i class="fa-solid fa-cloud"></i> Cloud Computing & Storage</h3>
+            <p>Firebase Firestore NoSQL database for scalable data storage and real-time synchronization. Cloud-based deployment with automatic scaling capabilities.</p>
+
+            <h3><i class="fa-solid fa-shield-halved"></i> Cybersecurity & Data Protection</h3>
+            <p>SHA-256 cryptographic hashing for image integrity verification, secure session management with Flask-Session, and API authentication with secure tokens.</p>
+
+            <h3><i class="fa-solid fa-link"></i> Blockchain Technology</h3>
+            <p>Custom blockchain implementation with proof-of-work consensus for immutable disease diagnosis records and transparent audit trails.</p>
+
+            <h3><i class="fa-solid fa-server"></i> Web Framework & Backend</h3>
+            <p>Flask micro-framework with RESTful API endpoints, Jinja2 templating engine, and Werkzeug WSGI server for robust web application development.</p>
+
+            <h3><i class="fa-solid fa-code"></i> Frontend Technologies</h3>
+            <p>Bootstrap 5 responsive CSS framework, Font Awesome icons, Google Fonts typography, and vanilla JavaScript for interactive user interfaces.</p>
+
+            <h3><i class="fa-solid fa-database"></i> Enterprise Resource Planning (ERP)</h3>
+            <p>Integrated ERP system with automated record management, analytics dashboard, and comprehensive reporting for agricultural data management.</p>
+
+            <h3><i class="fa-solid fa-chart-line"></i> Data Analytics & Visualization</h3>
+            <p>Real-time disease distribution charts, predictive analytics for disease progression, and statistical analysis of diagnosis patterns.</p>
+
+            <h3><i class="fa-solid fa-mobile-alt"></i> Responsive Design</h3>
+            <p>Mobile-first responsive design with adaptive layouts, touch-friendly interfaces, and cross-device compatibility for farmers and agricultural professionals.</p>
         </div>
     </div>
     
@@ -251,6 +421,7 @@
         <i class="fa-solid fa-code"></i>
         Created by Jeevesh & Alisha Gambhir | AI Project
         </p>
+    </div>
     </div>
 
     <script>
@@ -265,13 +436,14 @@
                 reader.onload = function(e) {
                     previewImage.src = e.target.result;
                     previewContainer.style.display = 'block';
-                }
+                };
                 
                 reader.readAsDataURL(fileInput.files[0]);
             }
-            function showLoading(){
-                document.getElementById("loading").style.display="block";
-            }
+        }
+
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
         }
     </script>
 </body>

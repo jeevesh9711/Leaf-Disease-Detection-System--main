@@ -1,148 +1,103 @@
 # Leaf Disease Detection System 🌱💻
 
-## Introduction 🌟
+## Overview
 
-Welcome to the Leaf Disease Detection System, a comprehensive and innovative solution for identifying plant diseases through advanced image analysis 📸. This project seamlessly integrates cutting-edge technologies to provide a robust, secure, and efficient platform for agricultural diagnostics 🌟.
+The Leaf Disease Detection System is a Flask-based web application that detects plant leaf diseases using a PyTorch ResNet18 model. It combines image classification, severity analysis, secure session management, simple blockchain logging, and an ERP-style dashboard to track analyses and diagnosis history.
 
-### Key Features 🎯
+## What This Project Includes
 
-- **Cloud Computing Integration** ☁️: Leveraging Firebase Firestore for scalable data storage and retrieval, ensuring that analysis records are securely stored and easily accessible.
-- **Cybersecurity Measures** 🔒: Implementing secure session management, image hashing, and API authentication to protect user data and system integrity.
-- **Blockchain Technology** 📈: A simple yet effective blockchain implementation to record and verify diagnosis history, adding an extra layer of trust and transparency to the system.
-- **Enterprise Resource Planning (ERP)** 📊: An integrated system to manage and track all plant disease analyses, providing valuable insights and analytics.
-- **User-Friendly Web Application** 🌐: Built with Flask, offering an intuitive interface for users to upload leaf images and receive instant disease diagnoses.
+- **Web app interface** for leaf image upload and disease diagnosis.
+- **AI prediction engine** using a ResNet18 model with 5 disease classes.
+- **Severity analysis** and treatment recommendations for detected diseases.
+- **Simple blockchain ledger** to record prediction transactions.
+- **ERP dashboard** that displays analysis records and disease distribution.
+- **Firebase support** for optional cloud storage of analysis records.
+- **API endpoint** for programmatic image prediction requests.
 
-## Technical Overview 🤖
+## Supported Diseases
 
-### 1. **Cloud Computing**
-   - **Firebase Firestore**: Used for real-time data storage and retrieval.
-   - **Cloud Status**: The system can operate in both cloud-connected and local modes.
+- Anthracnose
+- Bacterial Blight
+- Cercospora Leaf Spot
+- Powdery Mildew
+- Shot Hole Disease
 
-### 2. **Cybersecurity**
-   - **Secure Sessions**: User sessions are managed securely to prevent unauthorized access.
-   - **Image Hashing**: Images are hashed for data integrity and security.
-   - **API Authentication**: API endpoints are secured with authentication keys.
+## Files and Structure
 
-### 3. **Blockchain**
-   - **Simple Blockchain Implementation**: Records diagnosis history in a blockchain for transparency and trust.
-   - **Blockchain Ledger**: Available for viewing on the ERP dashboard.
+- `integrated-leaf-disease-project.py` – Main Flask application entrypoint.
+- `my_leaf_disease_model.pth` – Trained model weights used for prediction.
+- `firebase-key.json` – Firebase service account credentials (or placeholder file).
+- `templates/` – HTML templates for the web UI and dashboard.
+- `requirements.txt` – Python dependencies.
 
-### 4. **ERP System**
-   - **Analysis Records Management**: Tracks all analyses with detailed records.
-   - **Disease Distribution Insights**: Provides insights into the distribution of detected diseases.
+## Features
 
-### 5. **AI Model**
-   - **ResNet18 Architecture**: Utilizes a deep learning model trained on a dataset of leaf images.
-   - **Disease Classes**: Trained to recognize five common leaf diseases:
-     - Anthracnose 🌿
-     - Bacterial Blight 🌱
-     - Cercospora Leaf Spot 🌻
-     - Powdery Mildew ❄️
-     - Shot Hole Disease 🔫
+- **Image-based disease classification** with confidence scores.
+- **Leaf validation** to reject non-leaf image uploads.
+- **Severity assessment** with risk level, affected area, and action recommendations.
+- **Blockchain recording** of user prediction events.
+- **ERP-style analytics** for total records, block count, and disease counts.
+- **API access** via `/api/predict` with API key validation.
+- **Automatic placeholder generation** for missing `firebase-key.json` and dummy model file.
 
-### 6. **Web Application**
-   - **Flask Framework**: Built with Flask for a lightweight and efficient web interface.
-   - **Responsive Design**: Accessible across various devices and screen sizes.
+## Setup Instructions
 
-## Code Structure 📁
-
-The code is organized into several key components:
-
-- **`app.py`**: The main Flask application file.
-- **`templates/`**: Contains HTML templates for the web interface.
-- **`static/`**: Holds static files like CSS and JavaScript.
-- **`requirements.txt`**: Lists all dependencies required to run the application.
-
-## Setup Instructions 📝
-
-1. **Clone the Repository**:
+1. **Install dependencies**:
    ```bash
-   https://github.com/jeevesh9711/Leaf-Disease-Detection-System--main.git
+   pip install -r requirements.txt
    ```
 
-2. **Install Dependencies**:
+2. **Run the application**:
    ```bash
-   pip install Flask Flask-Session torch torchvision Pillow requests firebase-admin
+   python integrated-leaf-disease-project.py
    ```
 
-3. **Create Firebase Key File**:
-   - If you don't have a Firebase service account key, generate a placeholder using the `create_firebase_key()` function in `app.py`.
+3. **Open the app**:
+   - Visit `http://127.0.0.1:5000` in your browser.
 
-4. **Run the Application**:
-   ```bash
-   python app.py
-   ```
+4. **Dashboard**:
+   - Visit `http://127.0.0.1:5000/dashboard` to see ERP records and blockchain data.
 
-5. **Access the Application**:
-   - Open a web browser and navigate to `http://127.0.0.1:5000`. This is for the local deployement
+## API Usage
 
-## Contributing 🤝
+Endpoint:
+- `POST /api/predict`
 
-Contributions are welcome! Please submit pull requests with detailed explanations of changes.
+Headers:
+- `X-API-Key: demo_api_key`
+- `X-User-ID: your_user_id` (optional)
 
-## License 📜
+Body:
+- Multipart form with a `file` field containing the leaf image.
 
-This project is licensed under the MIT License.
+Example using `curl`:
+```bash
+curl -X POST http://127.0.0.1:5000/api/predict \
+  -H "X-API-Key: demo_api_key" \
+  -F "file=@path/to/leaf.jpg"
+```
 
----
+## Notes
 
-### Example Use Cases 📚
+- The application will create a placeholder `firebase-key.json` if none exists.
+- If `my_leaf_disease_model.pth` is missing, the app creates a dummy model for testing. Use your trained model file for accurate predictions.
+- Cloud features are optional; the app will still run locally if Firebase initialization fails.
 
-1. **Disease Diagnosis**:
-   - Upload a leaf image to the web application.
-   - Receive instant diagnosis with confidence levels.
+## Dependencies
 
-2. **ERP Dashboard**:
-   - View analysis records and blockchain ledger.
-   - Get insights into disease distribution.
+Key packages used:
+- `Flask`
+- `Flask-Session`
+- `torch`
+- `torchvision`
+- `Pillow`
+- `firebase-admin`
+- `requests`
 
-3. **API Integration**:
-   - Use the API endpoint to integrate with other applications.
+## Contribution
 
----
+Contributions are welcome. Feel free to open an issue or submit a pull request with enhancements, bug fixes, or new disease support.
 
-### Future Enhancements 🚀
+## License
 
-- **Expand Disease Database**: Train the model on more diseases.
-- **Improve Blockchain Security**: Implement more advanced blockchain features.
-- **Enhance User Interface**: Add more interactive features to the web application.
-
----
-
-This project demonstrates the power of combining AI, cloud computing, blockchain, and enterprise-level features to address critical challenges in plant health management. 🌟
-
----
-
-### Technologies Used 🛠️
-
-- **Backend**: Python with Flask framework.
-- **AI Model**: PyTorch (ResNet18).
-- **Database**: Firebase Firestore.
-- **Frontend**: HTML, CSS, JavaScript.
-- **Security**: Custom implementations for session management and data protection.
-- **Deployment**: Ready for cloud deployment with Gunicorn.
-
----
-
-### Team 🤝
-
-- **Jeevesh**
-- **Alisha Gambhir**
-
----
-
-### Acknowledgments 🙏
-
-Special thanks to all contributors and supporters of this project. Your efforts are greatly appreciated! 🌟
-
----
-
-### Conclusion 🌟
-
-The Leaf Disease Detection System is a significant leap forward in agricultural technology, offering a secure, scalable, and manageable solution for plant disease diagnostics. By integrating cutting-edge technologies, this project sets a new standard for innovation in the field. 🌟
-
----
-
-### GitHub Repository 📚
-
-[Link to our GitHub repository](https://github.com/jeevesh9711/Leaf-Disease-Detection-System--main.git)
+This project is released under the MIT License.

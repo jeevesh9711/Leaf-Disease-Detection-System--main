@@ -16,14 +16,22 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg,#e8f5e9,#c8e6c9);
-            max-width: 1100px;
-            margin: auto;
-        padding: 20px;
+            max-width: 100%;
+            margin: 0;
+            padding: 20px;
         }
+
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
         h1, h2, h3 {
             color: #2c7c4e;
         }
-        .container{
+
+        .content-card {
             background:white;
             border-radius:12px;
             padding:25px;
@@ -32,47 +40,131 @@
             transition:0.3s;
         }
 
-.container:hover{
-transform:translateY(-4px);
-}
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
+        .content-card:hover {
+            transform:translateY(-4px);
+        }
 
-th{
-background:#2c7c4e;
-color:white;
-}
+        .table-responsive {
+            overflow-x:auto;
+        }
 
-th,td{
-padding:12px;
-border-bottom:1px solid #ddd;
-}
+        table {
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+            min-width: 600px;
+        }
 
-tr:hover{
-background:#f1f1f1;
-}
+        th {
+            background:#2c7c4e;
+            color:white;
+        }
+
+        th, td {
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        tr:hover {
+            background:#f1f1f1;
+        }
+
         .nav {
             text-align: right;
             margin-bottom: 20px;
         }
+
         .nav a {
             color: #2c7c4e;
             text-decoration: none;
             padding: 5px 10px;
         }
-       .block-info{
-background:#f9f9f9;
-border-left:5px solid #2c7c4e;
-padding:15px;
-margin-top:20px;
-border-radius:8px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
+
+        .content-card {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .block-info {
+            background:#f9f9f9;
+            border-left:5px solid #2c7c4e;
+            padding:15px;
+            margin-top:20px;
+            border-radius:8px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+        }
+
         .disease-distribution {
             margin-top: 30px;
+        }
+
+        .distribution-chart {
+            min-height: 260px;
+            background:white;
+            border-radius:10px;
+            padding:20px;
+            display:flex;
+            flex-wrap:wrap;
+            align-items:flex-end;
+            justify-content:space-around;
+            gap: 12px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .distribution-bar {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            width: 16%;
+            min-width: 80px;
+        }
+
+        .distribution-bar .bar {
+            width: 100%;
+            background-color: #4682b4;
+            border-radius: 8px 8px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .distribution-bar span {
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 14px;
+            }
+
+            .nav {
+                text-align: center;
+            }
+
+            .nav a {
+                display: inline-block;
+                margin: 0 4px;
+            }
+
+            .content-card {
+                padding:18px;
+            }
+
+            table {
+                min-width: auto;
+                font-size: 14px;
+            }
+
+            .distribution-chart {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .distribution-bar {
+                width: 100%;
+                min-width:auto;
+            }
         }
     </style>
 </head>
@@ -82,9 +174,8 @@ box-shadow:0 4px 10px rgba(0,0,0,0.1);
 <i class="fa-solid fa-house"></i> Home
 </a>
 </div>
-    <div class="container">
-   
-<div class="container">
+    <div class="page-wrapper">
+        <div class="content-card">
 
     <h1>
     <i class="fa-solid fa-chart-line"></i>
@@ -117,21 +208,21 @@ box-shadow:0 4px 10px rgba(0,0,0,0.1);
 
     </div>
 
-    <p>Enterprise Resource Planning System for Leaf Disease Detection</p>
         <p>Enterprise Resource Planning System for Leaf Disease Detection</p>
         
         <h2>Analysis Records</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Record ID</th>
-                    <th>User ID</th>
-                    <th>Prediction</th>
-                    <th>Confidence</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Record ID</th>
+                        <th>User ID</th>
+                        <th>Prediction</th>
+                        <th>Confidence</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% for record in records %}
                 <tr>
                     <td>{{ record.record_id[:8] }}...</td>
@@ -148,14 +239,11 @@ box-shadow:0 4px 10px rgba(0,0,0,0.1);
                 {% endif %}
             </tbody>
         </table>
+        </div>
         
         <div class="disease-distribution">
             <h2>Disease Distribution</h2>
-            <div id="distributionChart" 
-style="height:300px;background:white;border-radius:10px;
-display:flex;align-items:flex-end;padding:20px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-                <!-- Placeholder for a real chart implementation -->
+            <div class="distribution-chart">
                 {% set diseases = {'Anthracnose': 0, 'Bacterial_Blight': 0, 'Cercospora_Leaf_Spot': 0, 'Powdery_Mildew': 0, 'Shot_Hole_Disease': 0} %}
                 
                 {% for record in records %}
@@ -165,12 +253,9 @@ box-shadow:0 4px 10px rgba(0,0,0,0.1);">
                 {% endfor %}
                 
                 {% for disease, count in diseases.items() %}
-                    <div style="margin-right: 10px; text-align: center;">
-                        <div style="background-color: #4682b4; width: 40px; height: {{ count * 30 if count else 5 }}px;"></div>
-                        <div style="font-size: 12px; margin-top: 5px; writing-mode: vertical-lr; transform: rotate(180deg);">
-                            {{ disease|replace('_', ' ') }}
-                        </div>
-                        <div>{{ count }}</div>
+                    <div class="distribution-bar">
+                        <div class="bar" data-height="{{ (count * 28) if count else 24 }}"></div>
+                        <span>{{ disease|replace('_', ' ') }} ({{ count }})</span>
                     </div>
                 {% endfor %}
             </div>
@@ -189,30 +274,43 @@ Blockchain Ledger
             
             <h4>Transactions:</h4>
             {% if block.transactions %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Image Hash</th>
-                        <th>Prediction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for tx in block.transactions %}
-                    <tr>
-                        <td>{{ tx.user_id[:8] }}...</td>
-                        <td>{{ tx.image_hash[:8] }}...</td>
-                        <td>{{ tx.prediction|replace('_', ' ') }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Image Hash</th>
+                            <th>Prediction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in block.transactions %}
+                        <tr>
+                            <td>{{ tx.user_id[:8] }}...</td>
+                            <td>{{ tx.image_hash[:8] }}...</td>
+                            <td>{{ tx.prediction|replace('_', ' ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
             <p>No transactions in this block.</p>
             {% endif %}
         </div>
         {% endfor %}
+        </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.distribution-bar .bar').forEach(function(bar) {
+                const height = bar.dataset.height;
+                if (height) {
+                    bar.style.height = height + 'px';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
         

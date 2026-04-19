@@ -52,13 +52,58 @@ classes = [
     'Shot_Hole_Disease'
 ]
 
-# Disease information dictionary
+# Disease information dictionary with solutions
 disease_info = {
-    'Anthracnose': 'A fungal disease that causes dark, sunken lesions on leaves, stems, flowers and fruits.',
-    'Bacterial_Blight': 'A bacterial infection causing water-soaked lesions that eventually turn brown.',
-    'Cercospora_Leaf_Spot': 'A fungal disease characterized by circular spots with gray centers and dark borders.',
-    'Powdery_Mildew': 'A fungal disease that appears as a white or gray powdery coating on leaf surfaces.',
-    'Shot_Hole_Disease': 'A fungal disease where small circular lesions fall out of leaves creating a "shot hole" appearance.'
+    'Anthracnose': {
+        'description': 'A fungal disease that causes dark, sunken lesions on leaves, stems, flowers and fruits.',
+        'solutions': [
+            'Remove infected leaves and plant debris',
+            'Apply fungicide sprays (copper-based or sulfur)',
+            'Ensure good air circulation and avoid overhead watering',
+            'Maintain proper spacing between plants',
+            'Disinfect pruning tools between cuts'
+        ]
+    },
+    'Bacterial_Blight': {
+        'description': 'A bacterial infection causing water-soaked lesions that eventually turn brown.',
+        'solutions': [
+            'Prune and remove infected branches',
+            'Apply copper-based bactericide sprays',
+            'Avoid wetting foliage when watering',
+            'Sterilize pruning equipment',
+            'Practice crop rotation and proper sanitation'
+        ]
+    },
+    'Cercospora_Leaf_Spot': {
+        'description': 'A fungal disease characterized by circular spots with gray centers and dark borders.',
+        'solutions': [
+            'Remove and destroy infected leaves',
+            'Apply systemic fungicides containing azoxystrobin',
+            'Improve air circulation within the canopy',
+            'Water at the base of plants to keep leaves dry',
+            'Apply preventive fungicide sprays weekly'
+        ]
+    },
+    'Powdery_Mildew': {
+        'description': 'A fungal disease that appears as a white or gray powdery coating on leaf surfaces.',
+        'solutions': [
+            'Apply sulfur or neem oil sprays',
+            'Remove heavily infected leaves',
+            'Increase air circulation and reduce humidity',
+            'Avoid excessive nitrogen fertilizer',
+            'Spray with baking soda solution (1 tablespoon per gallon)'
+        ]
+    },
+    'Shot_Hole_Disease': {
+        'description': 'A fungal disease where small circular lesions fall out of leaves creating a "shot hole" appearance.',
+        'solutions': [
+            'Remove infected leaves from the plant and ground',
+            'Apply preventive copper fungicide sprays',
+            'Improve drainage and reduce leaf wetness',
+            'Prune to enhance air flow',
+            'Avoid working with wet plants to prevent spore spread'
+        ]
+    }
 }
 
 # Image transformation
@@ -114,6 +159,125 @@ def secure_image_hash(image_bytes):
 def generate_user_token():
     """Generate a secure token for user session"""
     return base64.urlsafe_b64encode(os.urandom(30)).decode('utf-8')
+
+def get_disease_prediction(disease_name, weather_data):
+    """Predict future disease progression and outcomes"""
+    disease_predictions = {
+        'Anthracnose': {
+            'week_1': 'Initial lesions will expand to cover 10-20% of leaf area',
+            'week_2': 'Disease spreads to new leaves; fruit may show dark sunken spots',
+            'week_3': 'Severe defoliation begins; significant fruit damage expected',
+            'long_term': 'Without treatment: Complete crop loss within 4-6 weeks in humid conditions',
+            'seasonal': 'Peak infection during warm, wet spring and fall seasons',
+            'recommendation': 'Start treatment immediately to prevent exponential spread'
+        },
+        'Bacterial_Blight': {
+            'week_1': 'Water-soaked spots expand; lesions turn necrotic (brown)',
+            'week_2': 'Lesions merge; entire branches may wilt and die back',
+            'week_3': 'Cankers form on stems; branch death accelerates',
+            'long_term': 'Without treatment: Plant may become permanently damaged or die within 3-4 weeks',
+            'seasonal': 'Most severe in spring with frequent overhead rain',
+            'recommendation': 'Prune affected branches immediately; drastic action required'
+        },
+        'Cercospora_Leaf_Spot': {
+            'week_1': 'Circular spots appear on lower leaves; spots grow to 1cm diameter',
+            'week_2': 'Centers turn gray; spots appear on middle canopy leaves',
+            'week_3': 'Upper leaves affected; significant leaf yellowing and drop',
+            'long_term': 'Without treatment: Defoliation within 5-8 weeks; reduced fruit quality',
+            'seasonal': 'Progressive throughout growing season; worse in warm, humid conditions',
+            'recommendation': 'Regular fungicide applications prevent severe outcomes'
+        },
+        'Powdery_Mildew': {
+            'week_1': 'White powder appears on young leaves; spreads to new growth',
+            'week_2': 'Powdery coating thickens; leaves curl and become distorted',
+            'week_3': 'Entire canopy may appear white; fruit quality degrades',
+            'long_term': 'Without treatment: Reduced photosynthesis leads to poor fruit development and smaller yields',
+            'seasonal': 'Develops slowly in cool springs; accelerates in warm days with cool nights',
+            'recommendation': 'Early treatment with sulfur or neem prevents widespread infection'
+        },
+        'Shot_Hole_Disease': {
+            'week_1': 'Small circular lesions appear on older leaves',
+            'week_2': 'Lesion centers fall out creating "shot holes"; trees look damaged',
+            'week_3': 'Multiple holes per leaf; significant aesthetic damage',
+            'long_term': 'Without treatment: Weak tree vigor; increased susceptibility to other diseases within 6-8 weeks',
+            'seasonal': 'Most problematic in spring during cool, wet periods',
+            'recommendation': 'Preventive copper sprays in early season prevent hole formation'
+        }
+    }
+    
+    return disease_predictions.get(disease_name, {
+        'week_1': 'Disease will begin to show visible symptoms',
+        'week_2': 'Symptoms will expand to larger leaf areas',
+        'week_3': 'Significant damage expected without treatment',
+        'long_term': 'Monitor plant closely for progression',
+        'seasonal': 'Disease activity depends on weather conditions',
+        'recommendation': 'Implement treatment plan immediately'
+    })
+
+def detect_disease_severity(image, disease_name):
+    """Analyze image to determine disease severity level"""
+    try:
+        # Convert to grayscale for analysis
+        gray = image.convert('L')
+
+        # Get image dimensions
+        width, height = gray.size
+        total_pixels = width * height
+
+        # Analyze pixel intensity distribution
+        pixels = list(gray.getdata())
+        dark_pixels = sum(1 for pixel in pixels if pixel < 100)  # Dark areas (potential disease)
+        light_pixels = sum(1 for pixel in pixels if pixel > 200)  # Light areas
+
+        # Calculate affected area percentage
+        affected_percentage = (dark_pixels / total_pixels) * 100
+
+        # Disease-specific severity thresholds
+        severity_thresholds = {
+            'Anthracnose': {'mild': 5, 'moderate': 15, 'severe': 25},
+            'Bacterial_Blight': {'mild': 3, 'moderate': 10, 'severe': 20},
+            'Cercospora_Leaf_Spot': {'mild': 8, 'moderate': 18, 'severe': 30},
+            'Powdery_Mildew': {'mild': 10, 'moderate': 25, 'severe': 40},
+            'Shot_Hole_Disease': {'mild': 2, 'moderate': 8, 'severe': 15}
+        }
+
+        thresholds = severity_thresholds.get(disease_name, {'mild': 5, 'moderate': 15, 'severe': 25})
+
+        if affected_percentage <= thresholds['mild']:
+            severity_level = 'Mild'
+            severity_description = f'Less than {thresholds["mild"]:.1f}% of leaf area affected. Early stage disease.'
+            action_required = 'Monitor closely, consider preventive treatment.'
+            risk_level = 'Low'
+        elif affected_percentage <= thresholds['moderate']:
+            severity_level = 'Moderate'
+            severity_description = f'{thresholds["mild"]:.1f}% to {thresholds["moderate"]:.1f}% of leaf area affected. Disease is progressing.'
+            action_required = 'Immediate treatment recommended to prevent spread.'
+            risk_level = 'Medium'
+        else:
+            severity_level = 'Severe'
+            severity_description = f'More than {thresholds["moderate"]:.1f}% of leaf area affected. Advanced disease stage.'
+            action_required = 'Urgent treatment required. Consider removing affected leaves.'
+            risk_level = 'High'
+
+        return {
+            'severity_level': severity_level,
+            'affected_percentage': affected_percentage,
+            'description': severity_description,
+            'action_required': action_required,
+            'risk_level': risk_level,
+            'thresholds': thresholds
+        }
+
+    except Exception as e:
+        logger.error(f"Severity detection error: {e}")
+        return {
+            'severity_level': 'Unknown',
+            'affected_percentage': 0,
+            'description': 'Unable to determine severity',
+            'action_required': 'Consult agricultural expert',
+            'risk_level': 'Unknown',
+            'thresholds': {'mild': 5, 'moderate': 15, 'severe': 25}
+        }
 
 # ------ ERP INTEGRATION ------
 class SimpleERP:
@@ -191,6 +355,14 @@ def predict_image(image_bytes, user_id):
         prediction = classes[predicted.item()]
         confidence = float(probabilities[predicted.item()]) * 100
 
+        # Validate if the image is actually a leaf
+        # If confidence is below 40%, it's likely not a leaf image
+        if confidence < 30:
+            return {
+                "error": "The uploaded image does not appear to be a plant leaf. Please upload a clear image of a plant leaf for disease detection.",
+                "is_leaf": False
+            }
+
         # Blockchain record
         blockchain.add_transaction(user_id, image_hash, prediction)
 
@@ -202,22 +374,40 @@ def predict_image(image_bytes, user_id):
         class_probs = [(classes[i], float(probabilities[i]) * 100) for i in range(len(classes))]
         class_probs.sort(key=lambda x: x[1], reverse=True)
 
+        # Get disease prediction
+        disease_prediction = get_disease_prediction(prediction, {})
+
+        # Analyze disease severity
+        severity_analysis = detect_disease_severity(image, prediction)
+
+        # Get disease details
+        disease_details = disease_info.get(prediction, {})
+        if isinstance(disease_details, dict):
+            disease_description = disease_details.get('description', 'No information available')
+            disease_solutions = disease_details.get('solutions', [])
+        else:
+            disease_description = disease_details
+            disease_solutions = []
+
         return {
             "prediction": prediction,
             "confidence": confidence,
             "image_hash": image_hash,
             "blockchain_index": blockchain.get_previous_block()["index"],
             "all_predictions": class_probs[:3],
-            "disease_info": disease_info.get(prediction, "No additional information available.")
+            "disease_info": disease_description,
+            "disease_solutions": disease_solutions,
+            "disease_prediction": disease_prediction,
+            "severity_analysis": severity_analysis,
+            "is_leaf": True
         }
 
     except Exception as e:
         logger.error(f"Prediction error: {e}")
 
         return {
-            "prediction": "Error in processing",
-            "confidence": 0,
-            "error": str(e)
+            "error": f"Error processing image: {str(e)}",
+            "is_leaf": False
         }
     
 # ------ ROUTES ------
